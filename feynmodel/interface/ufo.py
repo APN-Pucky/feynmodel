@@ -10,8 +10,17 @@ from feynmodel.vertex import Vertex
 def ufo_to_fm_particle(ufo_object, model):
     return model.get_particle(name=ufo_object.name, pdg_code=ufo_object.pdg_code)
 
+
 def ufo_to_fm_parameter(ufo_object, model):
     return model.get_parameter(name=ufo_object.name)
+
+
+def ufo_to_fm_lorentz(ufo_object, model):
+    return model.get_lorentz(name=ufo_object.name)
+
+
+def ufo_to_fm_couplings(ufo_object, model):
+    return model.get_coupling(name=ufo_object.name)
 
 
 def ufo_object_to_dict(ufo_object, model=None):
@@ -25,11 +34,15 @@ def ufo_object_to_dict(ufo_object, model=None):
         ufo_object.width = ufo_to_fm_parameter(ufo_object.width, model)
 
     # Fix vertex
-    # print(ufo_object.require_args)
-    # print(ufo_object.__dict__)
     if "particles" in ufo_object.require_args:
         np = [ufo_to_fm_particle(p, model) for p in ufo_object.particles]
         ufo_object.particles = np
+    # Fix decay
+    if "lorentz" in ufo_object.require_args:  # ufo_object.__dict__:
+        ufo_object.lorentz = ufo_to_fm_lorentz(ufo_object.lorentz, model)
+    if "couplings" in ufo_object.require_args:  # ufo_object.__dict__:
+        for k, v in ufo_object.partial_widths.items():
+            ufo_object.couplings[k] = ufo_to_fm_couplings(v, model)
     # Fix decay
     if "particle" in ufo_object.require_args:  # ufo_object.__dict__:
         ufo_object.particle = ufo_to_fm_particle(ufo_object.particle, model)
@@ -62,9 +75,29 @@ def load_ufo_model(model_path, model_name="imported_ufo_model"):
 
     # Convert the UFO model to a FeynModel object
     feynmodel = FeynModel()
-    for parameter in model.all_particles:
+    for lorentz in model.all_lorentz:
+        feynmodel.add_lorentz(Particle(**ufo_object_to_dict(lorentz, model=feynmodel)))
+    for couplings in model.all_couplings:
+        feynmodel.add_couplings(
+            Particle(**ufo_object_to_dict(couplings, model=feynmodel))
+        )
+    for order in model.all_orders:
+        feynmodel.add_order(Particle(**ufo_object_to_dict(order, model=feynmodel)))
+    for function in model.all_functions:
+        feynmodel.add_function(
+            Particle(**ufo_object_to_dict(function, model=feynmodel))
+        )
+    for decay in model.all_decays:
+        feynmodel.add_decay(Particle(**ufo_object_to_dict(decay, model=feynmodel)))
+    for parameter in model.all_parameters:
         feynmodel.add_parameter(
             Particle(**ufo_object_to_dict(parameter, model=feynmodel))
+        )
+    for lorentz in model.all_lorentz:
+        feynmodel.add_lorentz(Particle(**ufo_object_to_dict(lorentz, model=feynmodel)))
+    for couplings in model.all_couplings:
+        feynmodel.add_couplings(
+            Particle(**ufo_object_to_dict(couplings, model=feynmodel))
         )
     for particle in model.all_particles:
         feynmodel.add_particle(

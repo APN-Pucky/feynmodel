@@ -4,6 +4,11 @@ class FeynModel:
         self.particles = []
         self.vertices = []
         self.parameters = []
+        self.lorentz = []
+        self.couplings = []
+        self.order = []
+        self.functions = []
+        self.decays = []
 
     def add_particle(self, particle):
         if particle not in self.particles:
@@ -11,11 +16,41 @@ class FeynModel:
         else:
             raise Exception("Particle %s already exists" % particle)
 
+    def add_decay(self, decay):
+        if decay not in self.decays:
+            self.decays.append(decay)
+        else:
+            raise Exception("Decay %s already exists" % decay)
+
+    def add_function(self, function):
+        if function not in self.functions:
+            self.functions.append(function)
+        else:
+            raise Exception("Function %s already exists" % function)
+
+    def add_order(self, order):
+        if order not in self.order:
+            self.order.append(order)
+        else:
+            raise Exception("Order %s already exists" % order)
+
     def add_parameter(self, parameter):
         if parameter not in self.parameters:
             self.parameters.append(parameter)
         else:
             raise Exception("Parameter %s already exists" % parameter)
+
+    def add_coupling(self, coupling):
+        if coupling not in self.couplings:
+            self.couplings.append(coupling)
+        else:
+            raise Exception("Coupling %s already exists" % coupling)
+
+    def add_lorentz(self, lorentz):
+        if lorentz not in self.lorentz:
+            self.lorentz.append(lorentz)
+        else:
+            raise Exception("Lorentz %s already exists" % lorentz)
 
     def add_vertex(self, vertex):
         if vertex not in self.vertices:
@@ -40,4 +75,18 @@ class FeynModel:
         for parameter in self.parameters:
             if parameter.name == name:
                 return parameter
+        return None
+
+    def get_lorentz(self, name=None):
+        """Return lorentz with given name"""
+        for lorentz in self.lorentz:
+            if lorentz.name == name:
+                return lorentz
+        return None
+
+    def get_coupling(self, name=None):
+        """Return coupling with given name"""
+        for coupling in self.couplings:
+            if coupling.name == name:
+                return coupling
         return None
