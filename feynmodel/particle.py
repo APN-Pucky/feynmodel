@@ -1,7 +1,7 @@
-from feynmodel.base_class import BaseClass
+from feynmodel.ufo_base_class import UFOBaseClass
 
 
-class Particle(BaseClass):
+class Particle(UFOBaseClass):
     """A standard Particle"""
 
     require_args = [
@@ -64,10 +64,10 @@ class Particle(BaseClass):
             float(charge),
         )
 
-        BaseClass.__init__(self, *args, **options)
+        UFOBaseClass.__init__(self, *args, **options)
 
-        #global all_particles
-        #all_particles.append(self)
+        # global all_particles
+        # all_particles.append(self)
 
         self.propagating = propagating
         self.goldstoneboson = goldstoneboson

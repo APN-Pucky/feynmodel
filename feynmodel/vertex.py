@@ -1,21 +1,17 @@
-from feynmodel.base_class import BaseClass
+from feynmodel.ufo_base_class import UFOBaseClass
 
 
-class Vertex(BaseClass):
+class Vertex(UFOBaseClass):
 
-    require_args = [
-        "name",
-        "particles",
-        "color", 
-	    "lorentz", 
-	    "couplings"
-    ]
+    require_args = ["name", "particles", "color", "lorentz", "couplings"]
 
-    def __init__(self, name, particles, color=None, lorentz=None, couplings=None, **opt):
+    def __init__(
+        self, name, particles, color=None, lorentz=None, couplings=None, **opt
+    ):
 
         args = (name, particles, color, lorentz, couplings)
 
-        BaseClass.__init__(self, *args, **opt)
+        UFOBaseClass.__init__(self, *args, **opt)
 
         args = (particles, color, lorentz, couplings)
 

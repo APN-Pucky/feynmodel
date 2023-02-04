@@ -1,7 +1,7 @@
-from feynmodel.base_class import BaseClass
+from feynmodel.ufo_base_class import UFOBaseClass
 
 
-class Parameter(BaseClass):
+class Parameter(UFOBaseClass):
 
     require_args = ["name", "nature", "type", "value", "texname"]
 
@@ -9,12 +9,12 @@ class Parameter(BaseClass):
 
         args = (name, nature, type, value, texname)
 
-        BaseClass.__init__(self, *args)
+        UFOBaseClass.__init__(self, *args)
 
         args = (name, nature, type, value, texname)
 
-        #global all_parameters
-        #all_parameters.append(self)
+        # global all_parameters
+        # all_parameters.append(self)
 
         if (lhablock is None or lhacode is None) and nature == "external":
             raise Exception('Need LHA information for external parameter "%s".' % name)

@@ -1,12 +1,12 @@
-from feynmodel.base_class import BaseClass
+from feynmodel.ufo_base_class import UFOBaseClass
 
 
-class FormFactor(BaseClass):
+class FormFactor(UFOBaseClass):
     require_args = ["name", "type", "value"]
 
     def __init__(self, name, type, value, **opt):
         args = (name, type, value)
-        BaseClass.__init__(self, *args, **opt)
+        UFOBaseClass.__init__(self, *args, **opt)
 
-        #global all_form_factors
-        #all_form_factors.append(self)
+        # global all_form_factors
+        # all_form_factors.append(self)

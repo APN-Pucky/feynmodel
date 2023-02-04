@@ -1,4 +1,5 @@
-class BaseClass(object):
+
+class UFOBaseClass(object):
     """The class from which all FeynRules classes are derived."""
 
     require_args = []
