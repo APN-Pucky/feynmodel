@@ -20,19 +20,10 @@ smpl_io = "*"
 smpl_doc = "*"
 smpl_util= "*"
 
-pyqgraf = {version = ">=0.0.3", optional = true}
-pyhepmc = {version = "*", optional = true}
-
-[tool.poetry.extras]
-interface = ["pyqgraf", "pyhepmc"]
-
-
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-pyhepmc = "*" # for testing
-pyqgraf = ">=0.0.3" # for testing
 pre-commit = "^2.20.0"
 pytest = "*"
 pytest-cov =  "*"

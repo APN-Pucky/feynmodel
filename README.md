@@ -1,6 +1,7 @@
 # FeynModel
 
-FeynModel is a project to develop an XML dialect for describing Feynman Models 
+FeynModel is a project to develop an XML dialect for describing Feynman Models.
+It is in design very close to the UFO format, but not as restrictive.
 
 [![PyPI version][pypi image]][pypi link] [![PyPI version][pypi versions]][pypi link]  ![downloads](https://img.shields.io/pypi/dm/feynml.svg)
 
