@@ -3,12 +3,19 @@ class FeynModel:
         self.name = name
         self.particles = []
         self.vertices = []
+        self.parameters = []
 
     def add_particle(self, particle):
         if particle not in self.particles:
             self.particles.append(particle)
         else:
             raise Exception("Particle %s already exists" % particle)
+
+    def add_parameter(self, parameter):
+        if parameter not in self.parameters:
+            self.parameters.append(parameter)
+        else:
+            raise Exception("Parameter %s already exists" % parameter)
 
     def add_vertex(self, vertex):
         if vertex not in self.vertices:
@@ -26,4 +33,11 @@ class FeynModel:
                 matched = False
             if matched:
                 return particle
+        return None
+
+    def get_parameter(self, name=None):
+        """Return parameter with given name"""
+        for parameter in self.parameters:
+            if parameter.name == name:
+                return parameter
         return None
