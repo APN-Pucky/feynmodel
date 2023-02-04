@@ -9,11 +9,21 @@ from feynmodel.util import get_name
 from feynmodel.vertex import Vertex
 
 
-def get_particle_name(particle, use_pdg_names=False):
+def get_particle_name(particle, use_pdg_names=False, anti=False):
+    # neutral particles have the same name as their antiparticles
+    # and PDG won't give us the negative pdgid 
+    if particle.name == particle.antiname:
+        anti = False
     if use_pdg_names:
-        return get_name(particle.pdg_code, particle.name)
+        if anti:
+            return get_name(-particle.pdg_code, particle.antiname)
+        else:
+            return get_name(particle.pdg_code, particle.name)
     else:
-        return particle.name
+        if anti:
+            return particle.antiname
+        else:
+            return particle.name
 
 
 def feynmodel_to_qgraf(
@@ -23,9 +33,10 @@ def feynmodel_to_qgraf(
     return_string + "* Particles\n"
     for p in feynmodel.particles:
         if include_antiparticles or p.pdg_code > 0:
-            stat = ["0", "+", "+", "-", "+"][p.spin + 1]
+            stat = ["-", "+", "+", "-", "+"][p.spin + 1]
             name = get_particle_name(p, use_pdg_names)
-        return_string += f"[{name},{p.antiname},{stat}]\n"
+            antiname = get_particle_name(p, use_pdg_names,anti=True)
+            return_string += f"[{name},{antiname},{stat}]\n"
     return_string + "* Vertices\n"
     for v in feynmodel.vertices:
         return_string += "["
