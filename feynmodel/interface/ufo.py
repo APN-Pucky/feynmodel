@@ -4,6 +4,7 @@ import os
 
 from feynmodel.feyn_model import FeynModel
 from feynmodel.particle import Particle
+from feynmodel.ufo_base_class import UFOBaseClass
 from feynmodel.vertex import Vertex
 
 
@@ -25,39 +26,39 @@ def ufo_to_fm_couplings(ufo_object, model):
 
 def ufo_object_to_dict(ufo_object, model=None):
     """Convert an UFO object to a dictionary"""
-    # We have to replace all instances of the UFO particle class with the FeynModel particle class
+    if isinstance(ufo_object, UFOBaseClass):
+        # We have to replace all instances of the UFO particle class with the FeynModel particle class
 
-    # Fix particle
-    if "mass" in ufo_object.require_args:
-        ufo_object.mass = ufo_to_fm_parameter(ufo_object.mass, model)
-    if "width" in ufo_object.require_args:
-        ufo_object.width = ufo_to_fm_parameter(ufo_object.width, model)
+        # Fix particle
+        if "mass" in ufo_object.require_args:
+            ufo_object.mass = ufo_to_fm_parameter(ufo_object.mass, model)
+        if "width" in ufo_object.require_args:
+            ufo_object.width = ufo_to_fm_parameter(ufo_object.width, model)
 
-    # Fix vertex
-    if "particles" in ufo_object.require_args:
-        np = [ufo_to_fm_particle(p, model) for p in ufo_object.particles]
-        ufo_object.particles = np
-    # Fix decay
-    if "lorentz" in ufo_object.require_args:  # ufo_object.__dict__:
-        ufo_object.lorentz = ufo_to_fm_lorentz(ufo_object.lorentz, model)
-    if "couplings" in ufo_object.require_args:  # ufo_object.__dict__:
-        for k, v in ufo_object.partial_widths.items():
-            ufo_object.couplings[k] = ufo_to_fm_couplings(v, model)
-    # Fix decay
-    if "particle" in ufo_object.require_args:  # ufo_object.__dict__:
-        ufo_object.particle = ufo_to_fm_particle(ufo_object.particle, model)
-    if "partial_widths" in ufo_object.require_args:  # ufo_object.__dict__:
-        for k, v in ufo_object.partial_widths.items():
-            ufo_object.partial_widths[
-                (ufo_to_fm_particle(k[0], model), ufo_to_fm_particle(k[2], model))
-            ] = v
+        # Fix vertex
+        if "particles" in ufo_object.require_args:
+            np = [ufo_to_fm_particle(p, model) for p in ufo_object.particles]
+            ufo_object.particles = np
+        # Fix decay
+        if "lorentz" in ufo_object.require_args:  # ufo_object.__dict__:
+            ufo_object.lorentz = ufo_to_fm_lorentz(ufo_object.lorentz, model)
+        if "couplings" in ufo_object.require_args:  # ufo_object.__dict__:
+            for k, v in ufo_object.partial_widths.items():
+                ufo_object.couplings[k] = ufo_to_fm_couplings(v, model)
+        # Fix decay
+        if "particle" in ufo_object.require_args:  # ufo_object.__dict__:
+            ufo_object.particle = ufo_to_fm_particle(ufo_object.particle, model)
+        if "partial_widths" in ufo_object.require_args:  # ufo_object.__dict__:
+            for k, v in ufo_object.partial_widths.items():
+                ufo_object.partial_widths[
+                    (ufo_to_fm_particle(k[0], model), ufo_to_fm_particle(k[2], model))
+                ] = v
 
-    return {key: ufo_object.__dict__[key] for key in ufo_object.require_args}
+    return ufo_object.__dict__
+    # return {key: ufo_object.__dict__[key] for key in ufo_object.require_args}
 
 
-# Load a UFO model and convert it to a FeynModel object
-def load_ufo_model(model_path, model_name="imported_ufo_model"):
-    """Load a UFO model and convert it to a FeynModel object"""
+def import_ufo_model(model_path, model_name="imported_ufo_model"):
     # Add the model path to the PYTHONPATH
     # This fixes the imports in the UFO model
     sys.path.append(os.path.abspath(model_path))
@@ -71,14 +72,25 @@ def load_ufo_model(model_path, model_name="imported_ufo_model"):
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     model = module
-    # model = importlib.import_module(os.path.abspath(model_path))
+    return model
 
+
+def ufo_to_feynmodel(model, model_object=None, model_class=FeynModel):
     # Convert the UFO model to a FeynModel object
-    feynmodel = FeynModel()
+    if model_object is not None:
+        if not isinstance(model_object, model_class):
+            raise ValueError(
+                f"model_object must be a {model_class} object. Use general FeynModel in case of doubt."
+            )
+        feynmodel = model_object
+    elif model_class is not None:
+        feynmodel = model_class()
+    else:
+        raise ValueError("model_object or model_class must be specified")
     for lorentz in model.all_lorentz:
         feynmodel.add_lorentz(Particle(**ufo_object_to_dict(lorentz, model=feynmodel)))
     for couplings in model.all_couplings:
-        feynmodel.add_couplings(
+        feynmodel.add_coupling(
             Particle(**ufo_object_to_dict(couplings, model=feynmodel))
         )
     for order in model.all_orders:
@@ -95,10 +107,6 @@ def load_ufo_model(model_path, model_name="imported_ufo_model"):
         )
     for lorentz in model.all_lorentz:
         feynmodel.add_lorentz(Particle(**ufo_object_to_dict(lorentz, model=feynmodel)))
-    for couplings in model.all_couplings:
-        feynmodel.add_couplings(
-            Particle(**ufo_object_to_dict(couplings, model=feynmodel))
-        )
     for particle in model.all_particles:
         feynmodel.add_particle(
             Particle(**ufo_object_to_dict(particle, model=feynmodel))
@@ -107,3 +115,10 @@ def load_ufo_model(model_path, model_name="imported_ufo_model"):
     for vertex in model.all_vertices:
         feynmodel.add_vertex(Vertex(**ufo_object_to_dict(vertex, model=feynmodel)))
     return feynmodel
+
+
+# Load a UFO model and convert it to a FeynModel object
+def load_ufo_model(model_path, model_name="imported_ufo_model", model_class=FeynModel):
+    """Load a UFO model and convert it to a FeynModel object"""
+    model = import_ufo_model(model_path, model_name)
+    return ufo_to_feynmodel(model, model_class=model_class)

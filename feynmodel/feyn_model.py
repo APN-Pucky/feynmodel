@@ -6,7 +6,7 @@ class FeynModel:
         self.parameters = []
         self.lorentz = []
         self.couplings = []
-        self.order = []
+        self.orders = []
         self.functions = []
         self.decays = []
 
@@ -29,8 +29,8 @@ class FeynModel:
             raise Exception("Function %s already exists" % function)
 
     def add_order(self, order):
-        if order not in self.order:
-            self.order.append(order)
+        if order not in self.orders:
+            self.orders.append(order)
         else:
             raise Exception("Order %s already exists" % order)
 

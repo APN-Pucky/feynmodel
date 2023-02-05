@@ -4,14 +4,16 @@ version = "0.0.0"
 description = "Models for constructing Feynman diagrams"
 authors = ["Alexander Puck Neuwirth <alexander@neuwirth-informatik.de>"]
 readme = "README.md"
-repository = "https://github.com/APN-Pucky/feynml"
+repository = "https://github.com/APN-Pucky/feynmodel"
 
 [tool.poetry.dependencies]
 python = "^3.8"
+# These must remain flexible to allow for different versions of the same package
+# and let the user decide which version to use
+ufo_sm = "*"
+ufo_mssm = "*"
 particle = "*"
 xsdata = {version = "*", extras = ["cli","lxml","soap"]}
-cssutils= "*"
-cssselect ="*"
 #pyqgraf = {path= "../pyqgraf", develop = true }
 #ipyparallel = "*"
 deprecated = "*"
