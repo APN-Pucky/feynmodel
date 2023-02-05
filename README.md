@@ -10,7 +10,7 @@ It is in design very close to the UFO format, but not as restrictive.
 
 ## Installation
 ```sh
-pip install [--user] feynml
+pip install [--user] feynmodel
 ```
 
 or from cloned source:
