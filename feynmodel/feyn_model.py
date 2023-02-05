@@ -1,3 +1,13 @@
+from feynmodel.coupling import Coupling
+from feynmodel.coupling_order import CouplingOrder
+from feynmodel.decay import Decay
+from feynmodel.function import Function
+from feynmodel.lorentz import Lorentz
+from feynmodel.parameter import Parameter
+from feynmodel.particle import Particle
+from feynmodel.vertex import Vertex
+
+
 class FeynModel:
     def __init__(self, name=None):
         self.name = name
@@ -9,6 +19,26 @@ class FeynModel:
         self.orders = []
         self.functions = []
         self.decays = []
+
+    def add_object(self, obj):
+        if isinstance(obj, Particle):
+            self.add_particle(obj)
+        elif isinstance(obj, Decay):
+            self.add_decay(obj)
+        elif isinstance(obj, Function):
+            self.add_function(obj)
+        elif isinstance(obj, CouplingOrder):
+            self.add_order(obj)
+        elif isinstance(obj, Parameter):
+            self.add_parameter(obj)
+        elif isinstance(obj, Coupling):
+            self.add_coupling(obj)
+        elif isinstance(obj, Lorentz):
+            self.add_lorentz(obj)
+        elif isinstance(obj, Vertex):
+            self.add_vertex(obj)
+        else:
+            raise Exception("Unknown object type %s" % obj.__class__.__name__)
 
     def add_particle(self, particle):
         if particle not in self.particles:

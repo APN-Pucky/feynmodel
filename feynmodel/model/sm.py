@@ -1,6 +1,7 @@
+import ufo_sm
+
 from feynmodel.feyn_model import FeynModel
 from feynmodel.interface.ufo import ufo_to_feynmodel
-import ufo_sm
 
 
 class SM(FeynModel):

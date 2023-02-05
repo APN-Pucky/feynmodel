@@ -1,8 +1,14 @@
-import sys
 import importlib
 import os
+import sys
 
+from feynmodel.coupling import Coupling
+from feynmodel.coupling_order import CouplingOrder
+from feynmodel.decay import Decay
 from feynmodel.feyn_model import FeynModel
+from feynmodel.function import Function
+from feynmodel.lorentz import Lorentz
+from feynmodel.parameter import Parameter
 from feynmodel.particle import Particle
 from feynmodel.ufo_base_class import UFOBaseClass
 from feynmodel.vertex import Vertex
@@ -53,9 +59,11 @@ def ufo_object_to_dict(ufo_object, model=None):
                 ufo_object.partial_widths[
                     (ufo_to_fm_particle(k[0], model), ufo_to_fm_particle(k[2], model))
                 ] = v
+        return {key: ufo_object.__dict__[key] for key in ufo_object.require_args}
+    else:
+        return ufo_object.__dict__
 
-    return ufo_object.__dict__
-    # return {key: ufo_object.__dict__[key] for key in ufo_object.require_args}
+    # return ufo_object.__dict__
 
 
 def import_ufo_model(model_path, model_name="imported_ufo_model"):
@@ -87,33 +95,27 @@ def ufo_to_feynmodel(model, model_object=None, model_class=FeynModel):
         feynmodel = model_class()
     else:
         raise ValueError("model_object or model_class must be specified")
-    for lorentz in model.all_lorentz:
-        feynmodel.add_lorentz(Particle(**ufo_object_to_dict(lorentz, model=feynmodel)))
-    for couplings in model.all_couplings:
-        feynmodel.add_coupling(
-            Particle(**ufo_object_to_dict(couplings, model=feynmodel))
-        )
-    for order in model.all_orders:
-        feynmodel.add_order(Particle(**ufo_object_to_dict(order, model=feynmodel)))
-    for function in model.all_functions:
-        feynmodel.add_function(
-            Particle(**ufo_object_to_dict(function, model=feynmodel))
-        )
-    for decay in model.all_decays:
-        feynmodel.add_decay(Particle(**ufo_object_to_dict(decay, model=feynmodel)))
-    for parameter in model.all_parameters:
-        feynmodel.add_parameter(
-            Particle(**ufo_object_to_dict(parameter, model=feynmodel))
-        )
-    for lorentz in model.all_lorentz:
-        feynmodel.add_lorentz(Particle(**ufo_object_to_dict(lorentz, model=feynmodel)))
-    for particle in model.all_particles:
-        feynmodel.add_particle(
-            Particle(**ufo_object_to_dict(particle, model=feynmodel))
-        )
 
-    for vertex in model.all_vertices:
-        feynmodel.add_vertex(Vertex(**ufo_object_to_dict(vertex, model=feynmodel)))
+    # Dict all_names to feynmodel objects
+    # Ordered by depencencym for replacing the UFO objects with the FeynModel objects
+    mapped_names = {
+        "all_lorentz": Lorentz,
+        "all_couplings": Coupling,
+        "all_orders": CouplingOrder,
+        "all_functions": Function,
+        "all_parameters": Parameter,
+        "all_particles": Particle,
+        "all_decays": Decay,
+        "all_vertices": Vertex,
+    }
+
+    for name, cls in mapped_names.items():
+        if hasattr(model, name):
+            for ufo_object in getattr(model, name):
+                print(f"Adding {ufo_object} to {feynmodel} as {cls}")
+                feynmodel.add_object(
+                    cls(**ufo_object_to_dict(ufo_object, model=feynmodel))
+                )
     return feynmodel
 
 
