@@ -27,6 +27,7 @@ poetry shell
 
 ## Related:
 
+*   <https://github.com/APN-Pucky/feynml>
 *   <https://github.com/APN-Pucky/pyfeyn2>
 
 
