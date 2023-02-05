@@ -3,14 +3,8 @@
 # Date: Mon 1 Oct 2012 14:58:26
 
 
-from object_library import all_orders, CouplingOrder
+from object_library import CouplingOrder, all_orders
 
+QCD = CouplingOrder(name="QCD", expansion_order=99, hierarchy=1)
 
-QCD = CouplingOrder(name = 'QCD',
-                    expansion_order = 99,
-                    hierarchy = 1)
-
-QED = CouplingOrder(name = 'QED',
-                    expansion_order = 99,
-                    hierarchy = 2)
-
+QED = CouplingOrder(name="QED", expansion_order=99, hierarchy=2)

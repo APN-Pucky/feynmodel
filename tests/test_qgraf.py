@@ -1,6 +1,6 @@
 import pathlib
-from feynmodel.interface.qgraf import feynmodel_to_qgraf, qgraf_to_feynmodel
 
+from feynmodel.interface.qgraf import feynmodel_to_qgraf, qgraf_to_feynmodel
 from feynmodel.interface.ufo import load_ufo_model
 
 
@@ -27,5 +27,5 @@ def test_idempotency():
     dir = pathlib.Path(__file__).parent.resolve()
     fm = load_ufo_model(dir / ".." / "models" / "ufo" / "sm")
     fm2 = qgraf_to_feynmodel(feynmodel_to_qgraf(fm, True))
-    #assert len(fm.particles) == len(fm2.particles), "Number of particles does not match"
-    #assert len(fm.vertices) == len(fm2.vertices), "Number of vertices does not match"
+    # assert len(fm.particles) == len(fm2.particles), "Number of particles does not match"
+    # assert len(fm.vertices) == len(fm2.vertices), "Number of vertices does not match"

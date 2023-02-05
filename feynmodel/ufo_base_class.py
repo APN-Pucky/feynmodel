@@ -1,11 +1,10 @@
-
 class UFOBaseClass(object):
     """The class from which all FeynRules classes are derived."""
 
     require_args = []
 
     def __init__(self, *args, **options):
-        assert(len(self.require_args) == len (args))
+        assert len(self.require_args) == len(args)
         for i, name in enumerate(self.require_args):
             setattr(self, name, args[i])
 
