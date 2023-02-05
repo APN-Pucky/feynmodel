@@ -10,4 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v3
+    # install poetry dynammic versioning
+    - name: Install poetry-dynamic-versioning
+      run: |
+        pip install poetry-dynamic-versioning
     - uses: pre-commit/action@v3.0.0
