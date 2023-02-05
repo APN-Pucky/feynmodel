@@ -27,7 +27,7 @@ all_lorentz = lorentz.all_lorentz
 all_parameters = parameters.all_parameters
 all_orders = coupling_orders.all_orders
 all_functions = function_library.all_functions
-#all_decays = decays.all_decays
+all_decays = decays.all_decays
 
 
 __author__ = "N. Christensen, C. Duhr"
