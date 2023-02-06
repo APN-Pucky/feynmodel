@@ -38,8 +38,8 @@ def feynmodel_to_qgraf(
     return_string + "* Vertices\n"
     for v in feynmodel.vertices:
         return_string += "["
-        for i in range(len(v.particles)):
-            return_string += get_particle_name(v.particles[i], use_pdg_names) + ","
+        for p in v.particles:
+            return_string += get_particle_name(p, use_pdg_names) + ","
         return_string = return_string[:-1] + "]\n"
     return return_string
 
@@ -52,7 +52,7 @@ def qgraf_to_feynmodel(qgraf_model: str):
         if "[" in line and "]" in line:
             content = line[line.index("[") + 1 : line.index("]")]
             contents = content.split(",")
-            for i, c in enumerate(contents):
+            for i, _ in enumerate(contents):
                 contents[i] = contents[i].strip()
             if contents[2] == "+" or contents[2] == "-":
                 # particle
