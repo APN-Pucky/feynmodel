@@ -52,7 +52,7 @@ def qgraf_to_feynmodel(qgraf_model: str):
         if "[" in line and "]" in line:
             content = line[line.index("[") + 1 : line.index("]")]
             contents = content.split(",")
-            for i in range(len(contents)):
+            for i,c in enumerate(contents):
                 contents[i] = contents[i].strip()
             if contents[2] == "+" or contents[2] == "-":
                 # particle
