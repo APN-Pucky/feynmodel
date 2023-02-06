@@ -9,8 +9,8 @@ def test_load_qgraf():
     # Read file as string
     dir = pathlib.Path(__file__).parent.resolve()
     with open(dir / ".." / "models" / "qgraf" / "test.qgraf", "r") as f:
-        str = f.read()
-        fm = qgraf_to_feynmodel(str)
+        s = f.read()
+        fm = qgraf_to_feynmodel(s)
         print(fm.particles)
         print(fm.vertices)
 
