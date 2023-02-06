@@ -1,5 +1,5 @@
 """
-FeynModel is a Python package for converting different Feynman Models. 
+FeynModel is a Python package for converting different Feynman Models.
 """
 
 from importlib.metadata import version
