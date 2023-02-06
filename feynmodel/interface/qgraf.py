@@ -1,8 +1,6 @@
 # Convert a feynmodel to a qgraf model
 # return the qgraf model as string
 
-import re
-
 from feynmodel.feyn_model import FeynModel
 from feynmodel.particle import Particle
 from feynmodel.util import get_name
