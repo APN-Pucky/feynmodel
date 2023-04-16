@@ -112,7 +112,7 @@ def ufo_to_feynmodel(model, model_object=None, model_class=FeynModel):
     for name, cls in mapped_names.items():
         if hasattr(model, name):
             for ufo_object in getattr(model, name):
-                print(f"Adding {ufo_object} to {feynmodel} as {cls}")
+                # print(f"Adding {ufo_object} to {feynmodel} as {cls}")
                 feynmodel.add_object(
                     cls(**ufo_object_to_dict(ufo_object, model=feynmodel))
                 )
@@ -122,5 +122,16 @@ def ufo_to_feynmodel(model, model_object=None, model_class=FeynModel):
 # Load a UFO model and convert it to a FeynModel object
 def load_ufo_model(model_path, model_name="imported_ufo_model", model_class=FeynModel):
     """Load a UFO model and convert it to a FeynModel object"""
-    model = import_ufo_model(model_path, model_name)
+    # check if model_path is a directory
+    model = None
+    if os.path.isdir(model_path):
+        model = import_ufo_model(model_path, model_name)
+    else:
+        # Test if a modulename is passed like ufo_sm or ufo_mssm
+        try:
+            model = importlib.import_module(model_path)
+        except ImportError:
+            raise ValueError(
+                f"Could not load UFO model from {model_path}. Make sure the path is correct."
+            )
     return ufo_to_feynmodel(model, model_class=model_class)
