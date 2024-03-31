@@ -51,10 +51,7 @@ class FeynModel:
         if isinstance(obj, Particle):
             self.remove_particle(obj)
             for v in self.vertices:
-                print(obj)
-                print(v.particles)
                 if obj in v.particles:
-                    print("removing vertex")
                     self.remove_vertex(v)
             for d in self.decays:
                 if obj == d.particle:
@@ -80,7 +77,6 @@ class FeynModel:
 
     def get_particle(self, name=None, pdg_code=None):
         """Return particle with given name or pdg_code"""
-        print(self.particles)
         for particle in self.particles:
             if (name is None or particle.name == name) and (
                 pdg_code is None or particle.pdg_code == pdg_code
