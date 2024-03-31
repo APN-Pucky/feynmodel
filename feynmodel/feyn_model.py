@@ -50,12 +50,18 @@ class FeynModel:
         """
         if isinstance(obj, Particle):
             self.remove_particle(obj)
+            rmv = []
             for v in self.vertices:
                 if obj in v.particles:
-                    self.remove_vertex(v)
+                    rmv += [v]
+            for v in rmv:
+                self.remove_vertex(v)
+            rmd = []
             for d in self.decays:
                 if obj == d.particle:
-                    self.remove_decay(d)
+                    rmd += [d]
+            for d in rmd:
+                self.remove_decay(d)
         else:
             raise NotImplementedError("remove_object %s" % obj.__class__.__name__)
 

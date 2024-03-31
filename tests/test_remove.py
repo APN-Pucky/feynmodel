@@ -13,3 +13,8 @@ def test_remove_particle():
     fm.remove_object(fm.get_particle(name="G0"))
     assert len(fm.particles) == before_particles - 1
     assert len(fm.vertices) < before_vertices
+
+    assert str(fm.get_particle(name="G0")) == "None"
+
+    assert "G0" not in str([str(v.particles) for v in fm.vertices])
+    assert "G0" not in str([str(v.particle) for v in fm.decays])
