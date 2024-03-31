@@ -56,20 +56,25 @@ def qgraf_to_feynmodel(qgraf_model: str):
                 contents[i] = contents[i].strip()
             if contents[2] == "+" or contents[2] == "-":
                 # particle
-                fm.add_particle(
-                    Particle(
-                        name=contents[0], antiname=contents[1], statistics=contents[2]
+                if fm.get_particle(name=contents[0]) is None:
+                    fm.add_particle(
+                        Particle(
+                            name=contents[0],
+                            antiname=contents[1],
+                            statistics=contents[2],
+                        )
                     )
-                )
             else:
+                name = "_".join(contents)
                 # vertex
-                fm.add_vertex(
-                    Vertex(
-                        name="_".join(contents),
-                        particles=[
-                            fm.get_particle(name=contents[i])
-                            for i in range(0, len(contents))
-                        ],
+                if fm.get_vertex(name=name) is None:
+                    fm.add_vertex(
+                        Vertex(
+                            name=name,
+                            particles=[
+                                fm.get_particle(name=contents[i])
+                                for i in range(0, len(contents))
+                            ],
+                        )
                     )
-                )
     return fm

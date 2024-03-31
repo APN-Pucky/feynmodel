@@ -6,4 +6,4 @@ from importlib.metadata import version
 
 package = "feynmodel"
 
-__version__ = version(package)
+# __version__ = version(package)

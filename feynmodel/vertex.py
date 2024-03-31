@@ -17,3 +17,6 @@ class Vertex(UFOBaseClass):
 
         # global all_vertices
         # all_vertices.append(self)
+
+    def __eq__(self, other):
+        return self.name == other.name

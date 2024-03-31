@@ -78,6 +78,9 @@ class Particle(UFOBaseClass):
         else:
             self.line = line
 
+    def __eq__(self, other):
+        return (self.pdg_code == other.pdg_code) and (self.name == other.name)
+
     def find_line_type(self):
         """find how we draw a line if not defined
         valid output: dashed/straight/wavy/curly/double/swavy/scurly
