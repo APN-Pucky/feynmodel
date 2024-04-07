@@ -1,6 +1,8 @@
 # Convert a feynmodel to a qgraf model
 # return the qgraf model as string
 
+from typing import Optional
+
 from feynmodel.feyn_model import FeynModel
 from feynmodel.particle import Particle
 from feynmodel.util import get_name
@@ -24,8 +26,19 @@ def get_particle_name(particle, use_pdg_names=False, anti=False):
             return particle.name
 
 
+def pdg_id_to_qgraf_name(
+    feynmodel: FeynModel, pdg_id: int, use_pdg_names: bool = False
+) -> Optional[str]:
+    for p in feynmodel.particles:
+        if p.pdg_code == pdg_id:
+            return get_particle_name(p, use_pdg_names)
+    return None
+
+
 def feynmodel_to_qgraf(
-    feynmodel: FeynModel, use_pdg_names=False, include_antiparticles=False
+    feynmodel: FeynModel,
+    use_pdg_names: bool = False,
+    include_antiparticles: bool = False,
 ):
     return_string = ""
     return_string + "* Particles\n"
