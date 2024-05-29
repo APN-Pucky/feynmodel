@@ -50,18 +50,6 @@ class FeynModel:
         """
         if isinstance(obj, Particle):
             self.remove_particle(obj)
-            rmv = []
-            for v in self.vertices:
-                if obj in v.particles:
-                    rmv += [v]
-            for v in rmv:
-                self.remove_vertex(v)
-            rmd = []
-            for d in self.decays:
-                if obj == d.particle:
-                    rmd += [d]
-            for d in rmd:
-                self.remove_decay(d)
         else:
             raise NotImplementedError("remove_object %s" % obj.__class__.__name__)
 
@@ -75,9 +63,21 @@ class FeynModel:
         else:
             raise Exception("Particle %s already exists" % particle)
 
-    def remove_particle(self, particle):
+    def remove_particle(self, particle, remove_vertices=True, remove_decays=True):
         if particle in self.particles:
             self.particles.remove(particle)
+            rmv = []
+            for vertex in self.vertices:
+                if particle in vertex.particles:
+                    rmv += [vertex]
+            for vertex in rmv:
+                self.remove_vertex(vertex)
+            rmd = []
+            for decay in self.decays:
+                if particle == decay.particle:
+                    rmd += [decay]
+            for decay in rmd:
+                self.remove_decay(decay)
         else:
             raise Exception("Particle %s does not exist" % particle)
 
