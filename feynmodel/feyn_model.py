@@ -78,6 +78,11 @@ class FeynModel:
                     rmd += [decay]
             for decay in rmd:
                 self.remove_decay(decay)
+            # remove anti if anti exists
+            if particle.has_anti():
+                anti = self.get_particle(particle.antiname)
+                if anti:
+                    self.remove_particle(anti)
         else:
             raise Exception("Particle %s does not exist" % particle)
 

@@ -1,3 +1,4 @@
+import warnings
 from feynmodel.ufo_base_class import UFOBaseClass
 
 
@@ -112,7 +113,13 @@ class Particle(UFOBaseClass):
         else:
             return "dashed"  # not supported yet
 
+    def has_anti(self):
+        return not self.selfconjugate
+
     def anti(self):
+        """
+        This function might be less 
+        """
         if self.selfconjugate:
             raise Exception("%s has no anti particle." % self.name)
         outdic = {}
