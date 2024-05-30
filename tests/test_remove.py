@@ -28,7 +28,8 @@ def test_remove_G__plus__():
     before_particles = len(fm.particles)
     before_vertices = len(fm.vertices)
     fm.remove_object(fm.get_particle(name="G+"))
-    assert len(fm.particles) == before_particles - 1
+    # we also remove G__minus__ here, so we expect 2 particles to be removed
+    assert len(fm.particles) == before_particles - 2
     assert len(fm.vertices) < before_vertices
 
     assert fm.get_particle(name="G+") is None
