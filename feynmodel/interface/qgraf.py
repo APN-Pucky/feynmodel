@@ -31,7 +31,7 @@ def pdg_id_to_qgraf_name(
 ) -> Optional[str]:
     for p in feynmodel.particles:
         if p.pdg_code == pdg_id:
-            #return get_particle_name(p, use_pdg_names, anti=pdg_id < 0)
+            # return get_particle_name(p, use_pdg_names, anti=pdg_id < 0)
             return get_particle_name(p, use_pdg_names)
     return None
 

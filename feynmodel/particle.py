@@ -1,4 +1,5 @@
 import warnings
+
 from feynmodel.ufo_base_class import UFOBaseClass
 
 
@@ -118,7 +119,7 @@ class Particle(UFOBaseClass):
 
     def anti(self):
         """
-        This function might be less 
+        This function might be less
         """
         if self.selfconjugate:
             raise Exception("%s has no anti particle." % self.name)
