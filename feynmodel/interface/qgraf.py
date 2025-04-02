@@ -36,6 +36,17 @@ def pdg_id_to_qgraf_name(
     return None
 
 
+def list_particle_names(
+    feynmodel: FeynModel,
+    use_pdg_names: bool = True,
+):
+    ret = []
+    for p in feynmodel.particles:
+        name = get_particle_name(p, use_pdg_names)
+        ret += [name]
+    return ret
+
+
 def feynmodel_to_qgraf(
     feynmodel: FeynModel,
     use_pdg_names: bool = False,
@@ -44,7 +55,7 @@ def feynmodel_to_qgraf(
     return_string = ""
     return_string + "* Particles\n"
     for p in feynmodel.particles:
-        if include_antiparticles or p.pdg_code > 0:
+        if include_antiparticles or p.pdg_code >= 0:
             stat = ["-", "+", "+", "-", "+"][p.spin + 1]
             name = get_particle_name(p, use_pdg_names)
             antiname = get_particle_name(p, use_pdg_names, anti=True)
