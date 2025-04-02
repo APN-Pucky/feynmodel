@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "feynmodel"
-version = "0.0.0"
+version = "0.0.11"
 description = "Models for constructing Feynman diagrams"
 authors = ["Alexander Puck Neuwirth <alexander@neuwirth-informatik.de>"]
 readme = "README.md"

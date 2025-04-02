@@ -1,3 +1,5 @@
+from typing import List
+
 from feynmodel.coupling import Coupling
 from feynmodel.coupling_order import CouplingOrder
 from feynmodel.decay import Decay
@@ -94,6 +96,15 @@ class FeynModel:
             ):
                 return particle
         return None
+
+    def has_particle(self, name=None, pdg_code=None):
+        """Return True if particle with given name or pdg_code exists"""
+        for particle in self.particles:
+            if (name is None or particle.name == name) or (
+                pdg_code is None or particle.pdg_code == pdg_code
+            ):
+                return True
+        return False
 
     ##############################
     # Decay related functions    #
@@ -234,3 +245,14 @@ class FeynModel:
             if vertex.name == name:
                 return vertex
         return None
+
+    def has_vertex(self, pdgids: List[int]):
+        """Return True if vertex with given pdgids exists"""
+        for vertex in self.vertices:
+            if len(vertex.particles) == len(pdgids) and all(
+                pdgids.count(p.pdg_code)
+                == [p.pdg_code for p in vertex.particles].count(p.pdg_code)
+                for p in vertex.particles
+            ):
+                return True
+        return False
